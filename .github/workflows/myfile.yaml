@@ -18,8 +18,29 @@ jobs:
         path: ~/.m2
         key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
         restore-keys: ${{ runner.os }}-m2
+    - name: List files in the current directory
+      run: dir
+    
     - name: Build with Maven
       run: mvn -B package --file pom.xml
+    
+    - name: Test with Maven
+      run: mvn test --file pom.xml
+
+    - name: Maven Checkstyle
+      run: mvn checkstyle:checkstyle
+
+    - name: Archive production artifacts
+      uses: actions/upload-artifact@v3
+      with:
+        name: dist-without-markdown
+        path: target/*.jar
+
+    - name: Prepare Imagemagick with HDRI for test
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y libmagickwand-dev --no-install-recommends
+
     - name: Test
       run: mvn test -B
     - name: Verify
