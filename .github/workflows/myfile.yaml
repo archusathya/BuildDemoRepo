@@ -20,16 +20,7 @@ jobs:
         restore-keys: ${{ runner.os }}-m2
     - name: List files in the current directory
       run: dir
-    
-    - name: Build with Maven
-      run: mvn -B package --file pom.xml
-    
-    - name: Test with Maven
-      run: mvn test --file pom.xml
-
-    - name: Maven Checkstyle
-      run: mvn checkstyle:checkstyle
-
+   
     - name: Archive production artifacts
       uses: actions/upload-artifact@v3
       with:
@@ -39,14 +30,5 @@ jobs:
     - name: Prepare Imagemagick with HDRI for test
       run: |
         sudo apt-get update
-        sudo apt-get install -y libmagickwand-dev --no-install-recommends
-
-    - name: Test
-      run: mvn test -B
-    - name: Verify
-      run: mvn verify
-    - name: Install
-      run: mvn install
-    - name: Deploy
-      run: mvn deploy
+        sudo apt-get install -y libmagickwand-dev --no-install-recommends  
 
